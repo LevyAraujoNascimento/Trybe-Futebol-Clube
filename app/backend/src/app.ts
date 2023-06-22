@@ -8,7 +8,7 @@ class App {
 
     this.config();
 
-    // Não remover essa rota
+    // Não remover essa rota Teste
     this.app.get('/', (req, res) => res.json({ ok: true }));
   }
 
