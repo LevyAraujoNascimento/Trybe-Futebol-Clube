@@ -15,6 +15,14 @@ class TeamService {
     }
     return { status: 'SUCCESSFUL', data: teams };
   }
+
+  public async listOneTeam(id: number): Promise<ServiceResponse<ITeams | null>> {
+    const team = await this.teamModel.listOne(id);
+    if (!team) {
+      return { status: 'NOT_FOUND', data: { message: 'Team not found' } };
+    }
+    return { status: 'SUCCESSFUL', data: team };
+  }
 }
 
 export default TeamService;

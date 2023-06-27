@@ -10,6 +10,11 @@ class TeamModel implements ITeamsModel {
     const result = await this.model.findAll();
     return result;
   }
+
+  async listOne(id: ITeams['id']): Promise<ITeams | null> {
+    const result = await this.model.findByPk(id);
+    return result;
+  }
 }
 
 export default TeamModel;
