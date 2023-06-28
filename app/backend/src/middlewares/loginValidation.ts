@@ -10,11 +10,11 @@ const validLogin = async (req: Request, res: Response, next: NextFunction): Prom
     return;
   }
   if (!regex.test(email)) {
-    res.status(400).send({ message: '"email" must be a valid email' });
+    res.status(401).send({ message: 'Invalid email or password' });
     return;
   }
   if (password.length <= passwordLimit) {
-    res.status(400).send({ message: '"password" must be a valid password' });
+    res.status(401).send({ message: 'Invalid email or password' });
     return;
   }
   next();
