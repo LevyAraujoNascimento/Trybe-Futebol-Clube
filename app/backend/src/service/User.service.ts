@@ -16,6 +16,14 @@ class UserService {
     }
     return { status: 'SUCCESSFUL', data: user };
   }
+
+  public async getRole(email: string): Promise<ServiceResponse<string | null>> {
+    const user = await this.userModel.isAvailable(email);
+    if (!user) {
+      return { status: 'NOT_FOUND', data: { message: 'User not found' } };
+    }
+    return { status: 'SUCCESSFUL', data: user.role };
+  }
 }
 
 export default UserService;

@@ -16,6 +16,13 @@ class UserController {
     const token = jwtUtil.sign(req.body);
     return res.status(200).json({ token });
   }
+
+  public async role(req: Request, res: Response): Promise<Response> {
+    const token = req.header('Authorization');
+    const decoded = jwtUtil.verify(token as string);
+    const role = await this.userService.getRole(decoded.email);
+    return res.status(200).json({ role: role.data });
+  }
 }
 
 const usersController = new UserController();
