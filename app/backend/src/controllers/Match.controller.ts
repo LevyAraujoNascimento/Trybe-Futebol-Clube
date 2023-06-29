@@ -26,7 +26,17 @@ class MatchController {
     const { id } = req.params;
     const result = await this.matchService.updateProgress(Number(id));
     if (result.status === 'NOT_FOUND') {
-      return res.status(404).send('Team not found');
+      return res.status(404).send('Match not found');
+    }
+    return res.status(200).json({ message: 'Finished' });
+  }
+
+  public async updateScore(req: Request, res: Response): Promise<Response> {
+    const { id } = req.params;
+    const { homeTeamGoals, awayTeamGoals } = req.body;
+    const result = await this.matchService.updateScore(Number(id), homeTeamGoals, awayTeamGoals);
+    if (result.status === 'NOT_FOUND') {
+      return res.status(404).send('Match not found');
     }
     return res.status(200).json({ message: 'Finished' });
   }

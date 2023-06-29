@@ -31,6 +31,18 @@ class MatchService {
     }
     return { status: 'SUCCESSFUL', data: true };
   }
+
+  public async updateScore(
+    id: number,
+    homeTeamGoals: number,
+    awayTeamGoals: number,
+  ): Promise<ServiceResponse<boolean>> {
+    const result = await this.matchModel.updateScore(id, homeTeamGoals, awayTeamGoals);
+    if (result === false) {
+      return { status: 'NOT_FOUND', data: { message: 'Match not changed' } };
+    }
+    return { status: 'SUCCESSFUL', data: true };
+  }
 }
 
 export default MatchService;

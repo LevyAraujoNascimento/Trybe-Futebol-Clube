@@ -34,6 +34,20 @@ class MatchModel implements IMatchesModel {
     if (affectedCount === 0) return false;
     return true;
   }
+
+  async updateScore(
+    id: number,
+    homeTeamGoals: number,
+    awayTeamGoals: number,
+  ): Promise<boolean | null> {
+    const [affectedCount] = await this.model.update({
+      homeTeamGoals,
+      awayTeamGoals,
+    }, { where: { id } });
+
+    if (affectedCount === 0) return false;
+    return true;
+  }
 }
 
 export default MatchModel;

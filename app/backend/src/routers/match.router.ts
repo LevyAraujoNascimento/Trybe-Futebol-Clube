@@ -10,6 +10,12 @@ matchRouter.get(
 );
 
 matchRouter.patch(
+  '/:id',
+  validToken,
+  (req: Request, res: Response) => controller.matchesController.updateScore(req, res),
+);
+
+matchRouter.patch(
   '/:id/finish',
   validToken,
   (req: Request, res: Response) => controller.matchesController.updateProgress(req, res),
