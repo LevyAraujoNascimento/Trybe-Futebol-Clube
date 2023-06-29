@@ -15,6 +15,14 @@ class MatchService {
     }
     return { status: 'SUCCESSFUL', data: matches };
   }
+
+  public async listAllMatchesInProgress(inProgress: boolean): Promise<ServiceResponse<IMatches[]>> {
+    const matches = await this.matchModel.listAllInProgress(inProgress);
+    if (!matches) {
+      return { status: 'NOT_FOUND', data: { message: 'Matches not found' } };
+    }
+    return { status: 'SUCCESSFUL', data: matches };
+  }
 }
 
 export default MatchService;

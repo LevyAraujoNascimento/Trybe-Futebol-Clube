@@ -16,6 +16,18 @@ class MatchModel implements IMatchesModel {
     );
     return result;
   }
+
+  async listAllInProgress(inProgress: boolean): Promise<IMatches[] | null> {
+    const result = await this.model.findAll(
+      {
+        where: { inProgress },
+        include: [
+          { model: SequelizeTeam, as: 'homeTeam', attributes: ['teamName'] },
+          { model: SequelizeTeam, as: 'awayTeam', attributes: ['teamName'] },
+        ] },
+    );
+    return result;
+  }
 }
 
 export default MatchModel;

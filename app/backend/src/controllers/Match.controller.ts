@@ -6,8 +6,19 @@ class MatchController {
     private matchService = new MatchService(),
   ) {}
 
-  public async listAllMatches(_req: Request, res: Response): Promise<Response> {
-    const matches = await this.matchService.listAllMatches();
+  public async listAllMatches(req: Request, res: Response): Promise<Response> {
+    const { inProgress } = req.query;
+    let filter;
+    if (inProgress === undefined) {
+      const matches = await this.matchService.listAllMatches();
+      return res.status(200).json(matches.data);
+    }
+    if (inProgress === 'true') {
+      filter = true;
+    } else {
+      filter = false;
+    }
+    const matches = await this.matchService.listAllMatchesInProgress(filter);
     return res.status(200).json(matches.data);
   }
 }
