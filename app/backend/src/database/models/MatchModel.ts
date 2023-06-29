@@ -28,6 +28,12 @@ class MatchModel implements IMatchesModel {
     );
     return result;
   }
+
+  async updateProgress(id: number): Promise<boolean | null> {
+    const [affectedCount] = await this.model.update({ inProgress: false }, { where: { id } });
+    if (affectedCount === 0) return false;
+    return true;
+  }
 }
 
 export default MatchModel;

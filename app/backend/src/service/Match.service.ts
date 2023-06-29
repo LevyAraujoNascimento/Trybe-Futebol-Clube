@@ -23,6 +23,14 @@ class MatchService {
     }
     return { status: 'SUCCESSFUL', data: matches };
   }
+
+  public async updateProgress(id: number): Promise<ServiceResponse<boolean>> {
+    const result = await this.matchModel.updateProgress(id);
+    if (result === false) {
+      return { status: 'NOT_FOUND', data: { message: 'Match not changed' } };
+    }
+    return { status: 'SUCCESSFUL', data: true };
+  }
 }
 
 export default MatchService;
