@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import MatchService from '../service/Match.service';
 
 const MATCH_NOT_FOUND = 'Match not found';
+const ITS_NOT_POSSIBLE = 'It is not possible to create a match with two equal teams';
 
 class MatchController {
   constructor(
@@ -44,9 +45,13 @@ class MatchController {
   }
 
   public async createMatch(req: Request, res: Response): Promise<Response> {
+    const { homeTeamId, awayTeamId } = req.body;
+    if (homeTeamId === awayTeamId) {
+      return res.status(422).json({ message: ITS_NOT_POSSIBLE });
+    }
     const result = await this.matchService.createMatch(req.body);
-    if (result.status === 'CONFLICT') {
-      return res.status(404).send(MATCH_NOT_FOUND);
+    if (result.status === 'NOT_FOUND') {
+      return res.status(404).json({ message: result.data.message });
     }
     return res.status(201).json(result.data);
   }

@@ -47,7 +47,7 @@ class MatchService {
   public async createMatch(body: IMatches): Promise<ServiceResponse<IMatches>> {
     const result = await this.matchModel.createMatch(body);
     if (!result) {
-      return { status: 'CONFLICT', data: { message: 'Error to create' } };
+      return { status: 'NOT_FOUND', data: { message: 'There is no team with such id!' } };
     }
     return { status: 'SUCCESSFUL', data: result };
   }

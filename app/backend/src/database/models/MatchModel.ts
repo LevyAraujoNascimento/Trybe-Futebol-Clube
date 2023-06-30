@@ -7,6 +7,18 @@ import { IMatchesModel } from '../../Interfaces/IMatchesModel';
 class MatchModel implements IMatchesModel {
   private model = SequelizeMatch;
 
+  async listById(id: number): Promise<IMatches | null> {
+    const result = await this.model.findOne(
+      {
+        where: { id },
+        include: [
+          { model: SequelizeTeam, as: 'homeTeam', attributes: ['teamName'] },
+          { model: SequelizeTeam, as: 'awayTeam', attributes: ['teamName'] },
+        ] },
+    );
+    return result;
+  }
+
   async listAll(): Promise<IMatches[] | null> {
     const result = await this.model.findAll(
       { include: [
@@ -50,6 +62,12 @@ class MatchModel implements IMatchesModel {
   }
 
   async createMatch(body: IMatches): Promise<IMatches | null> {
+    let id = body.homeTeamId;
+    const testA = await this.listById(id);
+    if (!testA) return testA;
+    id = body.awayTeamId;
+    const testB = await this.listById(id);
+    if (!testB) return testB;
     const result = await this.model.create({ ...body, inProgress: true });
     return result;
   }
