@@ -43,6 +43,14 @@ class MatchService {
     }
     return { status: 'SUCCESSFUL', data: true };
   }
+
+  public async createMatch(body: IMatches): Promise<ServiceResponse<IMatches>> {
+    const result = await this.matchModel.createMatch(body);
+    if (!result) {
+      return { status: 'CONFLICT', data: { message: 'Error to create' } };
+    }
+    return { status: 'SUCCESSFUL', data: result };
+  }
 }
 
 export default MatchService;

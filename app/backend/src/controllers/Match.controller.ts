@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
 import MatchService from '../service/Match.service';
 
+const MATCH_NOT_FOUND = 'Match not found';
+
 class MatchController {
   constructor(
     private matchService = new MatchService(),
@@ -26,7 +28,7 @@ class MatchController {
     const { id } = req.params;
     const result = await this.matchService.updateProgress(Number(id));
     if (result.status === 'NOT_FOUND') {
-      return res.status(404).send('Match not found');
+      return res.status(404).send(MATCH_NOT_FOUND);
     }
     return res.status(200).json({ message: 'Finished' });
   }
@@ -36,9 +38,17 @@ class MatchController {
     const { homeTeamGoals, awayTeamGoals } = req.body;
     const result = await this.matchService.updateScore(Number(id), homeTeamGoals, awayTeamGoals);
     if (result.status === 'NOT_FOUND') {
-      return res.status(404).send('Match not found');
+      return res.status(404).send(MATCH_NOT_FOUND);
     }
     return res.status(200).json({ message: 'Finished' });
+  }
+
+  public async createMatch(req: Request, res: Response): Promise<Response> {
+    const result = await this.matchService.createMatch(req.body);
+    if (result.status === 'CONFLICT') {
+      return res.status(404).send(MATCH_NOT_FOUND);
+    }
+    return res.status(201).json(result.data);
   }
 }
 

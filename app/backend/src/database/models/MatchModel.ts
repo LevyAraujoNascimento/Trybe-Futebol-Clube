@@ -48,6 +48,11 @@ class MatchModel implements IMatchesModel {
     if (affectedCount === 0) return false;
     return true;
   }
+
+  async createMatch(body: IMatches): Promise<IMatches | null> {
+    const result = await this.model.create({ ...body, inProgress: true });
+    return result;
+  }
 }
 
 export default MatchModel;

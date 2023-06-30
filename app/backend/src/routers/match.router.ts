@@ -21,4 +21,10 @@ matchRouter.patch(
   (req: Request, res: Response) => controller.matchesController.updateProgress(req, res),
 );
 
+matchRouter.post(
+  '/',
+  validToken,
+  (req: Request, res: Response) => controller.matchesController.createMatch(req, res),
+);
+
 export default matchRouter;
