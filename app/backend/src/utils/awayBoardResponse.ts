@@ -1,13 +1,14 @@
 import ILeaderBoard from '../Interfaces/ILeaderBoard';
 import IMatches from '../Interfaces/IMatches';
 import ITeams from '../Interfaces/ITeams';
+import { teamSort } from './boardResponse.util';
 
 const board = (teams: ITeams[], matches: IMatches[]): ILeaderBoard[] => teams.map((club) => {
-  const g = matches?.filter((element) => element.homeTeamId === club.id);
-  const wins = g.filter((e) => (e.homeTeamId === club.id && e.homeTeamGoals > e.awayTeamGoals));
+  const g = matches?.filter((element) => element.awayTeamId === club.id);
+  const wins = g.filter((e) => (e.awayTeamId === club.id && e.awayTeamGoals > e.homeTeamGoals));
   const draws = g.filter((game) => (game.homeTeamGoals === game.awayTeamGoals));
-  const goalsFavor = g.map((homeClub) => homeClub.homeTeamGoals);
-  const goalsOwn = g.map((awayClub) => awayClub.awayTeamGoals);
+  const goalsFavor = g.map((awayClub) => awayClub.awayTeamGoals);
+  const goalsOwn = g.map((homeClub) => homeClub.homeTeamGoals);
   return {
     name: club.teamName,
     totalPoints: (wins.length * 3) + (draws.length),
@@ -20,23 +21,7 @@ const board = (teams: ITeams[], matches: IMatches[]): ILeaderBoard[] => teams.ma
   };
 });
 
-export const teamSort = (a: ILeaderBoard, b: ILeaderBoard): number => {
-  if (a.totalPoints === b.totalPoints) {
-    if (a.totalVictories === b.totalVictories) {
-      if (a.goalsBalance === b.goalsBalance) {
-        if (a.goalsFavor === b.goalsFavor) {
-          return 1;
-        }
-        return b.goalsFavor - a.goalsFavor;
-      }
-      return (b.goalsBalance as number) - (a.goalsBalance as number);
-    }
-    return b.totalVictories - a.totalVictories;
-  }
-  return b.totalPoints - a.totalPoints;
-};
-
-const homeBoard = (teams: ITeams[], matches: IMatches[]): ILeaderBoard[] => {
+const awayBoard = (teams: ITeams[], matches: IMatches[]): ILeaderBoard[] => {
   const response = board(teams, matches);
   const result = response.map((element) => {
     const efficiency = ((element.totalPoints / (element.totalGames * 3)) * 100).toFixed(2);
@@ -49,4 +34,4 @@ const homeBoard = (teams: ITeams[], matches: IMatches[]): ILeaderBoard[] => {
   return result.sort((a, b) => teamSort(a, b));
 };
 
-export default homeBoard;
+export default awayBoard;

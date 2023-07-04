@@ -6,6 +6,7 @@ import ITeams from '../Interfaces/ITeams';
 import { IMatchesModel } from '../Interfaces/IMatchesModel';
 import ILeaderBoard from '../Interfaces/ILeaderBoard';
 import homeBoard from '../utils/boardResponse.util';
+import awayBoard from '../utils/awayBoardResponse';
 
 class LeaderBoardService {
   constructor(
@@ -26,6 +27,14 @@ class LeaderBoardService {
     const teams = await this.teamModel.listAll();
     if (!matches) return { status: 'NOT_FOUND', data: { message: 'Matches not found' } };
     const leaderboard = homeBoard(teams, matches);
+    return { status: 'SUCCESSFUL', data: leaderboard };
+  }
+
+  public async showAwayBoard(inProgress: boolean): Promise<ServiceResponse<ILeaderBoard[]>> {
+    const matches = await this.matchModel.listAllInProgress(inProgress);
+    const teams = await this.teamModel.listAll();
+    if (!matches) return { status: 'NOT_FOUND', data: { message: 'Matches not found' } };
+    const leaderboard = awayBoard(teams, matches);
     return { status: 'SUCCESSFUL', data: leaderboard };
   }
 }

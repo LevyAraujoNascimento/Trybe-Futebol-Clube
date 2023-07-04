@@ -8,4 +8,9 @@ leaderBoardRouter.get(
   (req: Request, res: Response) => controller.leaderBoardController.showHomeBoard(req, res),
 );
 
+leaderBoardRouter.get(
+  '/away',
+  (req: Request, res: Response) => controller.leaderBoardController.showAwayBoard(req, res),
+);
+
 export default leaderBoardRouter;
