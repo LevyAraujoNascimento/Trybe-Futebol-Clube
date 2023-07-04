@@ -20,6 +20,11 @@ class LeaderBoardController {
     const matches = await this.leaderBoardService.showAwayBoard(false);
     return res.status(200).json(matches.data);
   }
+
+  public async showMainBoard(_req: Request, res: Response): Promise<Response> {
+    const matches = await this.leaderBoardService.showMainBoard(false);
+    return res.status(200).json(matches.data);
+  }
 }
 
 const leaderBoardController = new LeaderBoardController();
