@@ -5,7 +5,7 @@ import { ITeamsModel } from '../Interfaces/ITeamsModel';
 import ITeams from '../Interfaces/ITeams';
 import { IMatchesModel } from '../Interfaces/IMatchesModel';
 import ILeaderBoard from '../Interfaces/ILeaderBoard';
-import board from '../utils/boardResponse.util';
+import homeBoard from '../utils/boardResponse.util';
 
 class LeaderBoardService {
   constructor(
@@ -25,7 +25,7 @@ class LeaderBoardService {
     const matches = await this.matchModel.listAllInProgress(inProgress);
     const teams = await this.teamModel.listAll();
     if (!matches) return { status: 'NOT_FOUND', data: { message: 'Matches not found' } };
-    const leaderboard = board(teams, matches);
+    const leaderboard = homeBoard(teams, matches);
     return { status: 'SUCCESSFUL', data: leaderboard };
   }
 }

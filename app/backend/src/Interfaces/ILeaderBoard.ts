@@ -7,6 +7,7 @@ interface ILeaderBoard {
   totalLosses: number,
   goalsFavor: number,
   goalsOwn: number,
+  goalsBalance?: number,
 }
 
 export default ILeaderBoard;

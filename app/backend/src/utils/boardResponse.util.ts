@@ -20,4 +20,33 @@ const board = (teams: ITeams[], matches: IMatches[]): ILeaderBoard[] => teams.ma
   };
 });
 
-export default board;
+const teamSort = (a: ILeaderBoard, b: ILeaderBoard): number => {
+  if (a.totalPoints === b.totalPoints) {
+    if (a.totalVictories === b.totalVictories) {
+      if (a.goalsBalance === b.goalsBalance) {
+        if (a.goalsFavor === b.goalsFavor) {
+          return 1;
+        }
+        return b.goalsFavor - a.goalsFavor;
+      }
+      return (b.goalsBalance as number) - (a.goalsBalance as number);
+    }
+    return b.totalVictories - a.totalVictories;
+  }
+  return b.totalPoints - a.totalPoints;
+};
+
+const homeBoard = (teams: ITeams[], matches: IMatches[]): ILeaderBoard[] => {
+  const response = board(teams, matches);
+  const result = response.map((element) => {
+    const efficiency = ((element.totalPoints / (element.totalGames * 3)) * 100).toFixed(2);
+    return {
+      ...element,
+      goalsBalance: element.goalsFavor - element.goalsOwn,
+      efficiency,
+    };
+  });
+  return result.sort((a, b) => teamSort(a, b));
+};
+
+export default homeBoard;
